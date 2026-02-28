@@ -1,65 +1,58 @@
-import Image from "next/image";
+'use client';
 
+import { useState, useCallback } from 'react';
+
+/**
+ * 首页组件 - AI 前端学习路线展示
+ * 使用 use client 指令，使该组件在客户端渲染以支持交互
+ */
 export default function Home() {
+  // 计数器状态，用于演示 React 状态管理
+  const [count, setCount] = useState(0);
+
+  // 使用 useCallback 缓存点击处理函数，避免子组件不必要的重渲染
+  // 使用函数式更新 setCount(c => c + 1)，避免闭包陷阱
+  const handleIncrement = useCallback(() => {
+    setCount((c) => c + 1);
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main
+      className="flex min-h-screen flex-col items-center justify-center p-8"
+      // flex: 使用 Flex 布局
+      // min-h-screen: 页面最小高度占满一屏
+      // flex-col: 主轴垂直方向排列子元素
+      // items-center: 交叉轴（水平方向）居中
+      // justify-center: 主轴（垂直方向）居中
+      // p-8: 整体内边距 2rem，保证内容不贴边
+    >
+      {/* 页面主标题 */}
+      <h1
+        className="text-4xl font-bold text-gray-800 dark:text-white"
+        // text-4xl: 设置较大的标题字号
+        // font-bold: 标题加粗
+        // text-gray-800: 浅色模式下为深灰色文字
+        // dark:text-white: 深色模式下文字为白色
+      >
+        AI 前端学习路线
+      </h1>
+
+      {/* 交互式计数器按钮，用于演示状态更新 */}
+      <button
+        type="button"
+        onClick={handleIncrement}
+        className="mt-8 rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600"
+        // mt-8: 按钮与标题之间的上外边距（间距）
+        // rounded-lg: 大圆角，按钮更柔和
+        // bg-blue-500: 按钮背景为中等饱和度的蓝色
+        // px-6 / py-3: 水平 / 垂直内边距，控制按钮尺寸
+        // text-white: 文字为白色，与蓝色背景对比清晰
+        // transition-colors: 颜色变化时添加过渡动画
+        // hover:bg-blue-600: 悬停时背景色加深，提供交互反馈
+        aria-label={`当前计数：${count}，点击增加`}
+      >
+        点击计数: {count}
+      </button>
+    </main>
   );
 }
