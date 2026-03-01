@@ -1,19 +1,28 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import SearchForm from '@/components/search/SearchForm';
 
 /**
  * 首页组件 - AI 前端学习路线展示
  * 使用 use client 指令，使该组件在客户端渲染以支持交互
  */
 export default function Home() {
-  // 计数器状态，用于演示 React 状态管理
-  const [count, setCount] = useState(0);
 
-  // 使用 useCallback 缓存点击处理函数，避免子组件不必要的重渲染
-  // 使用函数式更新 setCount(c => c + 1)，避免闭包陷阱
-  const handleIncrement = useCallback(() => {
-    setCount((c) => c + 1);
+  // 最近一次搜索的关键字，用于在页面上展示搜索结果（示例）
+  const [lastQuery, setLastQuery] = useState<string>('');
+
+  /**
+   * 处理搜索提交：
+   * - 接收 SearchForm 组件回传的搜索关键字
+   * - 在页面上展示，也可以在这里发起接口请求等
+   */
+  const handleSearch = useCallback((value: string) => {
+    setLastQuery(value);
+    // 实际项目中，可以在这里触发接口请求或路由跳转
+    // 例如：router.push(`/search?q=${encodeURIComponent(value)}`);
+    // 这里简单打印到控制台，便于在开发者工具中观察
+    console.log('搜索提交：', value);
   }, []);
 
   return (
@@ -36,23 +45,18 @@ export default function Home() {
       >
         AI 前端学习路线
       </h1>
-
-      {/* 交互式计数器按钮，用于演示状态更新 */}
-      <button
-        type="button"
-        onClick={handleIncrement}
-        className="mt-8 rounded-lg bg-blue-500 px-6 py-3 text-white transition-colors hover:bg-blue-600"
-        // mt-8: 按钮与标题之间的上外边距（间距）
-        // rounded-lg: 大圆角，按钮更柔和
-        // bg-blue-500: 按钮背景为中等饱和度的蓝色
-        // px-6 / py-3: 水平 / 垂直内边距，控制按钮尺寸
-        // text-white: 文字为白色，与蓝色背景对比清晰
-        // transition-colors: 颜色变化时添加过渡动画
-        // hover:bg-blue-600: 悬停时背景色加深，提供交互反馈
-        aria-label={`当前计数：${count}，点击增加`}
-      >
-        点击计数: {count}
-      </button>
+      {/* 智能搜索表单：支持防抖、下拉联想和键盘导航 */}
+      <div className="mt-8 w-full max-w-xl">
+        <SearchForm onSearch={handleSearch} />
+        {lastQuery && (
+          <p className="mt-3 text-sm text-gray-600 dark:text-gray-300">
+            最近一次搜索：
+            <span className="font-semibold text-gray-900 dark:text-white">
+              {lastQuery}
+            </span>
+          </p>
+        )}
+      </div>
     </main>
   );
 }
